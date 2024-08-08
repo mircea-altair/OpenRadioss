@@ -65,16 +65,20 @@ C-----------------------------------------------
 C-----------------------------------------------
 C   D u m m y   A r g u m e n t s
 C-----------------------------------------------
-      CHARACTER FILNAM*100,CHRUN*4,ROOT_SUB*80
+      CHARACTER FILNAM*2148,CHRUN*4,ROOT_SUB*80
       TYPE(SUBMODEL_DATA),INTENT(IN)::LSUBMODEL(*)               
 C-----------------------------------------------
 C   L o c a l   V a r i a b l e s
 C-----------------------------------------------
       INTEGER ISTAT,KDOM,IPID_RET,IERROR,WAIT,IPID_L,STAT,DOM_SWITCH
       LOGICAL(4) WAITA       
-#if defined(COMP_ARMFLANG) || defined(COMP_LLVM) || defined(COMP_AOCC)
-      INTEGER  GETPID
+#if defined(COMP_ARMFLANG) || defined(COMP_LLVM) || defined(COMP_AOCC) 
+      INTEGER ::  GETPID
 #endif
+#if defined(COMP_NVFORTRAN)
+      INTEGER, EXTERNAL :: GETPID
+#endif
+
       INTEGER :: LEN_TMP_NAME
       CHARACTER(len=4096) :: TMP_NAME
 C-----------------------------------------------
@@ -105,7 +109,7 @@ C----------------------------------------------------------------------
 C-------------------INTEL -> LINUX/LINUXIA64/MACOSX--------------------
 C----------------------------------------------------------------------         
 #else
-#if defined(COMP_GFORTRAN) || defined(COMP_ARMFLANG)|| defined(COMP_LLVM) || defined(COMP_AOCC)
+#if defined(COMP_GFORTRAN) || defined(COMP_ARMFLANG)|| defined(COMP_LLVM) || defined(COMP_AOCC) || defined(COMP_NVFORTRAN)
         CALL MY_FORK(IPID)
         IPID_RET = GETPID()
 #else
@@ -137,7 +141,7 @@ C----------------------------------------------------------------------
 C-------------------INTEL -> LINUX/LINUXIA64/MACOSX--------------------
 C----------------------------------------------------------------------                     
 #else
-#if defined(COMP_GFORTRAN) ||  defined(COMP_ARMFLANG) || defined(COMP_LLVM) ||  defined(COMP_AOCC)
+#if defined(COMP_GFORTRAN) ||  defined(COMP_ARMFLANG) || defined(COMP_LLVM) ||  defined(COMP_AOCC) || defined(COMP_NVFORTRAN)
             CALL MY_WAITPID(IPID,ISTAT,0,IPID_RET)
 #else
             CALL PXFWAITPID(IPID,ISTAT,0,IPID_RET,IERROR)

@@ -1070,7 +1070,6 @@ C
       !||--- called by ------------------------------------------------------
       !||    get_u_func_y     ../starter/source/user_interface/uaccess.F
       !||--- calls      -----------------------------------------------------
-      !||    ancmsg           ../starter/source/output/message/message.F
       !||--- uses       -----------------------------------------------------
       !||    message_mod      ../starter/share/message_module/message_mod.F
       !||====================================================================
@@ -1097,15 +1096,6 @@ C   L o c a l   V a r i a b l e s
 C-----------------------------------------------
       INTEGER J,ID,DEPLA
 C-----------------------------------------------
-C
-      IF (CODVERS<44 .OR. INVERS<40) THEN
-C
-         CALL ANCMSG(MSGID=421,
-     .               MSGTYPE=MSGERROR,
-     .               ANMODE=ANINFO_BLIND_2)
-C
-        RETURN
-      ENDIF
 C
       GET_U_NUMFUN = 0
       IF(IDFUN<=0)THEN
